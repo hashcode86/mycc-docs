@@ -3,24 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-myCC's Documentation!
-=====================================
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
 Nội dung
-==================
+========
 
 .. * :ref:`genindex`
 .. * :ref:`modindex`
 .. * :ref:`search`
-* :doc:`Hướng dẫn cấu hình SIP Phone <integrate/import-guide>`
-* :doc:`Tích hợp myCC WebPhone <integrate/import-guide>`
+* :doc:`Hướng dẫn cấu hình SIP Phone`
+* :doc:`Tích hợp myCC WebPhone <integrate/webphone-guide>`
    
 Tích hợp myCC WebPhone
------------
+----------------------
 
 Tích hợp myCC WebPhone cho phép bạn có thể tiếp nhận cuộc gọi tới tổng đài myCC ngay trên CRM / ERP của mình. Ngoài ra bạn cũng có thể nhấn vào số điện thoại khách hàng trên CRM để gọi ra cho khách hàng.
 
