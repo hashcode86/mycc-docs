@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" /><meta content="Import your existing technical documentation from version control into Read the Docs." lang="en" name="description" xml:lang="en" />
+
+    <title>Importing Your Documentation &#8212; mycc-docs  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="myCC’s Documentation!" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="importing-your-documentation">
+<h1>Importing Your Documentation<a class="headerlink" href="#importing-your-documentation" title="Permalink to this headline">¶</a></h1>
+<p>To import a public documentation repository, visit your <a class="reference external" href="https://readthedocs.org/dashboard">Read the Docs dashboard</a> and click <a class="reference external" href="https://readthedocs.org/dashboard/import">Import</a>. For private
+repositories, use the Read the Docs  <span class="xref std std-doc">commercial solution</span>.</p>
+<p>If you have <span class="xref std std-doc">connected your Read the Docs account</span> to GitHub, Bitbucket, or GitLab,
+you will see a list of your repositories that we are able to import.
+To import one of these projects, just click the import
+icon next to the repository you’d like to import. This will bring up a form that
+is already filled with your project’s information. Feel free to edit any of
+these properties, and then click <strong>Next</strong> to
+<span class="xref std std-ref">build your documentation</span>.</p>
+<div class="figure align-right" id="id1" style="width: 300px">
+<a class="reference external image-reference" href="../_static/images/first-steps/import-a-repository.png"><img alt="integrate\../_static/images/first-steps/import-a-repository.png" src="integrate\../_static/images/first-steps/import-a-repository.png" /></a>
+<p class="caption"><span class="caption-text">Importing a repository</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="manually-import-your-docs">
+<h2>Manually import your docs<a class="headerlink" href="#manually-import-your-docs" title="Permalink to this headline">¶</a></h2>
+<p>If you do not have a connected account, you will need to select <strong>Import Manually</strong>
+and enter the information for your repository yourself. You will also need to
+manually configure the webhook for your repository as well. When importing your
+project, you will be asked for the repository URL, along with some other
+information for your new project. The URL is normally the URL or path name you’d
+use to checkout, clone, or branch your repository. Some examples:</p>
+<ul class="simple">
+<li><p>Git: <code class="docutils literal notranslate"><span class="pre">https://github.com/ericholscher/django-kong.git</span></code></p></li>
+<li><p>Mercurial: <code class="docutils literal notranslate"><span class="pre">https://bitbucket.org/ianb/pip</span></code></p></li>
+<li><p>Subversion: <code class="docutils literal notranslate"><span class="pre">http://varnish-cache.org/svn/trunk</span></code></p></li>
+<li><p>Bazaar: <code class="docutils literal notranslate"><span class="pre">lp:pasta</span></code></p></li>
+</ul>
+<p>Add an optional homepage URL and some tags, and then click <strong>Next</strong>.</p>
+<p>Once your project is created, you’ll need to manually configure the repository
+webhook if you would like to have new changes trigger builds for your
+project on Read the Docs. Go to your project’s <span class="guilabel">Admin</span> &gt; <span class="guilabel">Integrations</span> page to
+configure a new webhook, or see <span class="xref std std-ref">our steps for webhook creation</span>
+for more information on this process.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Admin</span></code> page can be found at <code class="docutils literal notranslate"><span class="pre">https://readthedocs.org/dashboard/&lt;project-slug&gt;/edit/</span></code>.
+You can access all of the project settings from the admin page sidebar.</p>
+<div class="figure align-default" style="width: 400px">
+<a class="reference external image-reference" href="../_static/images/first-steps/admin-panel.png"><img alt="integrate\../_static/images/first-steps/admin-panel.png" src="integrate\../_static/images/first-steps/admin-panel.png" /></a>
+</div>
+</div>
+</div>
+<div class="section" id="building-your-documentation">
+<h2>Building your documentation<a class="headerlink" href="#building-your-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Within a few seconds of completing the import process,
+your code will automatically be fetched from your public repository,
+and the documentation will be built.
+Check out our <span class="xref std std-doc">/builds</span> page to learn more about how Read the Docs builds your docs,
+and to troubleshoot any issues that arise.</p>
+<p>Some documentation projects require additional configuration to build
+such as specifying a certain version of Python or installing additional dependencies.
+You can configure these settings in a <code class="docutils literal notranslate"><span class="pre">readthedocs.yml</span></code> file.
+See our <span class="xref std std-doc">/config-file/index</span> docs for more details.</p>
+<p>It is also important to note that the default version of Sphinx is <code class="docutils literal notranslate"><span class="pre">v1.8.5</span></code>. If
+chosing to build your documentation other than this, it must be specified in a
+<code class="docutils literal notranslate"><span class="pre">requirements.txt`</span></code> file.</p>
+<p>Read the Docs will host multiple versions of your code. You can read more about
+how to use this well on our <span class="xref std std-doc">/versions</span> page.</p>
+<p>If you have any more trouble, don’t hesitate to reach out to us.
+The <span class="xref std std-doc">/support</span> page has more information on getting in touch.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">mycc-docs</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">First steps</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Importing Your Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#manually-import-your-docs">Manually import your docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-your-documentation">Building your documentation</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">myCC’s Documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, hashcode.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/integrate/import-guide.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
