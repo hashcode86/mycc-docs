@@ -12,7 +12,13 @@ Nội dung
 * :doc:`Hướng dẫn cấu hình SIP Phone`
 * :doc:`Tích hợp myCC WebPhone <integrate/webphone-guide>`
 * :doc:`Gather Chrome Console Log <troubleshooting/gather-chrome-console-logs>`
-   
+
+WebPhone Guide
+--------------
+
+* :doc:`Reset Agent Status <webphone/reset-agent-status>`
+
+
 Tích hợp myCC WebPhone
 ----------------------
 
