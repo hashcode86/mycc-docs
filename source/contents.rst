@@ -39,6 +39,7 @@ Tích hợp myCC WebPhone cho phép bạn có thể tiếp nhận cuộc gọi t
    :caption: First steps
 
    integrate/import-guide
+   zoiper/zoiper
 
 
 .. Resources
