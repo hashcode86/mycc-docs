@@ -18,6 +18,7 @@ Nội dung
 .. * :ref:`search`
 * :doc:`Hướng dẫn cấu hình SIP Phone <integrate/import-guide>`
 * :doc:`Tích hợp myCC WebPhone <integrate/import-guide>`
+* :doc:`Zoiper <zoiper/zoiper>`
    
 Tích hợp myCC WebPhone
 -----------
