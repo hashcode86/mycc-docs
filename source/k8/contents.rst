@@ -23,8 +23,7 @@ Service Discovery
 Service Configuration
 =====================
 
-* :doc:`K8 ConfigMap <service-configuration/service-discovery>`
-* :doc:`K8 Secrets <service-configuration/service-discovery>`
+* :doc:`Service Configuration with K8S ConfigMap and Secrets <service-configuration/configmap-and-secrets>`
 
 Message Broker
 ==============
