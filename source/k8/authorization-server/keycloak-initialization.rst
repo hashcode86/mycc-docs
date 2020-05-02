@@ -28,24 +28,21 @@ Lấy public key  (Dùng khi thực hiện jwt authentication tại API gateway)
     :align: center
     :figwidth: 800px
 
-Khai báo các clients của etc-internal
-#####################################
+Khai báo các Client Application
+###############################
 
-Client trong keycloak đại diện cho một resource mà user có thể truy cập. Client (resource) này sẽ yêu cầu user phải thực hiện authenticate với keycloak. Dễ hiểu hơn, clients có thể là:
+Khái niệm về Client Application trong OAuth2 xem :doc:`TẠI ĐÂY <oauth2-quick-review>`
 
-* Một Application - Khi User truy cập Application thì Application này ủy quyền cho keycloak xác thực User --> Application đóng vai trò là một cient của keycloak
-* Một Webservice - Một Webservice muốn cung cấp cơ chế authentication cho các client của nó (webservice khác hoặc ứng dụng khác gọi tới nó). Client của webservice sẽ được cấp cặp key+secret, nó sẽ dùng để authenticate với keycloak, xin cấp access token để có thể gọi tới Webservice.
+Trong ETC (etc-internal), ta sẽ có một số các client sau:
 
-Trong ETC, các client có thể có là:
-
-* CRM Web Application
-* IM Web Application
-* Mobile Application
+* CRM web (angular single page application, type: public)
+* IM Web (angular single page application, type: public)
+* Mobile Application (type: public)
 * ...
 
-Cụ thể hơn, với phân hệ CRM, ta sẽ khai báo một client gồm các thông tin như ảnh dưới:
+Cụ thể hơn, với CRM web, ta sẽ khai báo một client application trên Keycloak gồm các thông tin như ảnh dưới:
 
-* Trong đó ``Root URL`` là đường dẫn truy cập của ứng dụng CRM. Ở đây ta ví dụ đường dẫn CRM là: ``https://www.keycloak.org/app/``
+* Trong đó ``Root URL`` là đường dẫn truy cập CRM Web. Ví dụ đường dẫn CRM web là: ``http://localhost:4200``
 
 .. figure:: /_static/images/k8/authorization-server/keycloak-initial-3.png
     :align: center
@@ -54,26 +51,35 @@ Cụ thể hơn, với phân hệ CRM, ta sẽ khai báo một client gồm các
 
 Sau khi tạo xong client, ta có thể view lại chi tiết hơn về cài đặt mặc định ban đầu client application này như ảnh dưới:
 
+* Access Type: Public - CRM là một public client application
 * Standard Flow Enabled: ON - Hỗ trợ ``Authorization Code Flow``
 * Direct Access Grants Enabled: ON - Hỗ trợ ``Resource Owner Password Credentials Grant Flow``
-* Xem them chi tiết về các Flow trong Oauth2: https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2
+* Xem thêm về các OAuth2 Flow `TẠI ĐÂY <https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2/>`_
 
 .. figure:: /_static/images/k8/authorization-server/keycloak-initial-4.png
     :align: center
     :figwidth: 800px
 
-Tại đây, sau khi kết thúc việc tạo client trên keycloak, tại phía ứng dụng CRM, khi user truy cập, nếu xác định user chưa login, CRM cần redirect trình duyệt của user qua trang đăng nhập của keycloak:
+Do CRM là Angular single page application, tức một public client, do đó nó cần thực hiện Auth qua Code Flow with PKCE ( :doc:`Lý do <oauth2-quick-review>` ). Do đó ta cần setting **Proof Key for Code Exchange Code Challenge Method** là S256 (SHA256)
+
+.. figure:: /_static/images/k8/authorization-server/keycloak-initial-4_1.png
+    :align: center
+    :figwidth: 800px
+
+
+Tại đây, sau khi kết thúc việc tạo client trên keycloak, tại phía ứng dụng CRM web, khi user truy cập, nếu xác định user chưa login, CRM cần redirect trình duyệt của user qua trang đăng nhập của keycloak:
 
 .. code-block:: bash
 
-	http://localhost:8080/auth/realms/etc-internal/protocol/openid-connect/auth?client_id=crm&redirect_uri={CRM_CALLBACK_URL}&response_type=code&scope=openid
+  https://keycloak.127.0.0.1.nip.io/auth/realms/etc-internal/protocol/openid-connect/auth?response_type=code&client_id=crm&redirect_uri=http%3A%2F%2Flocalhost%3A4200&scope=openid%20profile%20email&code_challenge=00ZJ1h1nu49N_YZzSL_30HGxPz1BGqoe2drd_ZLDaw4&code_challenge_method=S256&nonce={RANDOM_STRING}&state={RANDOM_STRING}
 
 Các nội dung cần chú ý:
 
-* ``...realms/etc-internal/...``: authenticate cho client của realm etc-internal
-* ``client_id=crm``: authenticate cho client ``crm``
-* ``redirect_uri={CRM_CALLBACK_URL}``: sau khi login thành công, chuyển người dùng về lại trang này
-* ``response_type=code``: sau khi login thành công client sẽ nhận được một Authorization Code. Client dùng code này để lấy về JWT Access Token (xem thêm OAuth2 Authorization Code Flow)
+* **https://keycloak.127.0.0.1.nip.io/auth/realms/etc-internal/protocol/openid-connect/auth**: Trang đăng nhập chung cho các ứng dụng (client) của etc-internal
+* **response_type=code**, **code_challenge_method=S256** và **code_challenge=...**: Code Flow + PKCE
+* **client_id=crm**: Thể hiện user muốn đăng nhập vào CRM
+* **redirect_uri=http%3A%2F%2Flocalhost%3A4200**: Sau khi login thành công, chuyển người dùng về location ``http://localhost:4200``
+
 
 Tuy nhiên tại đây etc-internal vẫn chưa có bất cứ user nào được khai báo nên chưa thể đăng nhập được.
 

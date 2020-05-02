@@ -8,7 +8,6 @@ Platform-provided service discovery
 .. figure:: /_static/images/k8/service-discovery-1.png
     :align: center
     :figwidth: 600px
-    :target: /_static/images/k8/service-discovery-1.png
 
 Interprocess (Service to Service) communication
 ###############################################

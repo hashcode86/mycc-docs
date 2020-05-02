@@ -7,10 +7,17 @@ Database for Keycloak
 
 DB cho Keycloak có thể sử dụng: Oracle, Mariadb, Mysql, H2, etc. Trong ví dụ này ta sử dụng một Mariadb với các thông tin:
 
-* IP_ADDR : 192.168.8.188
-* DB_NAME:  keycloak
-* USERNAME: keycloak
-* PASSWORD: keycloak
++------------+---------------+
+| KEY        | Value         |
++============+===============+
+| IP_ADDR    | 192.168.8.188 |
++------------+---------------+
+| DB_NAME    | keycloak      |
++------------+---------------+
+| USERNAME   | keycloak      |
++------------+---------------+
+| PASSWORD   | keycloak      |
++------------+---------------+
 
 Cấu hình K8 Service Object trỏ tới external endpoints là một Mariadb. Mục đích để các ứng dụng chạy trong K8cluster trỏ tới db này qua service name: ``keycloak-db``:
 
@@ -53,13 +60,13 @@ Cấu hình K8 Service Object trỏ tới external endpoints là một Mariadb. 
   #view lại các secret
   kubectl get secret
 
-Cấu hình thông tin DB
-#####################
+Cấu hình thông tin DB & Others
+##############################
 
 .. code-block:: bash
 
   cd; mkdir keycloak; cd keycloak
-  wget https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/9.0.3/kubernetes-examples/keycloak.yaml
+  wget https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/10.0.0/kubernetes-examples/keycloak.yaml
   
           #edit keycloak.yaml bổ sung thêm các thông tin cấu hình trong ``env``
   
@@ -77,22 +84,51 @@ Cấu hình thông tin DB
               secretKeyRef:
                 name: keycloak-secret
                 key: db.password
-          - name: KEYCLOAK_HOSTNAME
-            value: "keycloak.127.0.0.1.nip.io"
+          - name: KEYCLOAK_FRONTEND_URL
+            value: "https://keycloak.127.0.0.1.nip.io/auth"
 
 Run your owner Keycloak
 #######################
 
+Run Keycloak deployment & service:
+
 .. code-block:: bash
 
+  #to delete keycloak app:
+  #kubectl delete service/keycloak deployment.apps/keycloak
+  
   cd ~/keycloak
   kubectl create -f keycloak.yaml
   
   #To view deployment log:
   kubectl logs deployment.apps/keycloak
 
-  #to delete keycloak app:
-  #kubectl delete service/keycloak deployment.apps/keycloak
 
-* Tới đây ta có thể truy cập keycloak qua địa chỉ: **http://keycloak.127.0.0.1.nip.io:8080/auth/**
+Run edge ingress:
+
+.. code-block:: bash
+
+  #delete the old Keycloak ingress
+  #kubectl delete ingress keycloak
+  
+  echo '
+  apiVersion: extensions/v1beta1
+  kind: Ingress
+  metadata:
+    name: keycloak
+  spec:
+    tls:
+      - hosts:
+        - keycloak.127.0.0.1.nip.io
+    rules:
+    - host: keycloak.127.0.0.1.nip.io
+      http:
+        paths:
+        - backend:
+            serviceName: keycloak
+            servicePort: 8080
+  ' | kubectl apply -f -
+
+
+* Tới đây ta có thể truy cập keycloak qua địa chỉ: `https://keycloak.127.0.0.1.nip.io/ <https://keycloak.127.0.0.1.nip.io/>`_
 * Thiết lập ban đầu cho Keycloak :doc:`VISIT THIS <keycloak-initialization>`
