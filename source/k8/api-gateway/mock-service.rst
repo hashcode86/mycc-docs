@@ -99,55 +99,54 @@ Category Service Ingress
       - hosts:
         - api.127.0.0.1.nip.io
     rules:
-    - host: api.127.0.0.1.nip.io
+    - host: category.api.127.0.0.1.nip.io
       http:
         paths:
         - backend:
             serviceName: etc-mock
             servicePort: 80
-          path: /category/1.0.0/(.*)
-    - host: etc-api.default.svc.cluster.local
+          path: /v1/(.*)
+    - host: category-api.default.svc.cluster.local
       http:
         paths:
         - backend:
             serviceName: etc-mock
             servicePort: 80
-          path: /category/1.0.0/(.*)
+          path: /v1/(.*)
   EOF
 
 Với Ingress trên:
 
-* Client gửi request tới: http://api.127.0.0.1.nip.io/category/1.0.0/{THE_REST_REQUEST_PATH} 
-* Hoặc tới: http://etc-api.default.svc.cluster.local/category/1.0.0/{THE_REST_REQUEST_PATH}
-* Kong Ingress sẽ xử lý để gửi request tới backend service: etc-mock/thangdd7/ETCCategory/1.0.0/{THE_REST_REQUEST_PATH}
+* Client gửi request tới: http://category.api.127.0.0.1.nip.io/v1/customers/genders
+* Kong Ingress sẽ xử lý để gửi request tới backend K8s Service `etc-mock`: etc-mock.default.svc.cluster.local/thangdd7/ETCCategory/1.0.0/customers/genders
 
 
 K8s Internal Services Communication
 ***********************************
 
-Với ingress rules trên, mục đích để external client có thể giao tiếp tới Category service. Tuy nhiên để một K8s internal service gọi được tới service trên qua service name. Ta tạo một service cho mục đích giao tiếp nội bộ như dưới:
+Với ingress rules trên, mục đích để external client có thể giao tiếp tới Category service. Tuy nhiên để một K8s Internal Service gọi được tới Service trên qua service name. Ta tạo một service cho mục đích giao tiếp nội bộ như dưới:
 
 .. code-block:: bash
 
-  kubectl delete svc etc-api
+  kubectl delete svc category-api
   kubectl apply -f - <<EOF
   kind: Service
   apiVersion: v1
   metadata:
-    name: etc-api
+    name: category-api
   spec:
     type: ExternalName
-    externalName: api.10.61.231.9.nip.io
+    externalName: api.192.168.8.188.nip.io
     ports:
     - name: http
       protocol: TCP
       port: 80
   EOF
 
-Thử truy cập tới API của Category service thông qua K8s service name: `etc-api`
+Thử truy cập tới API của Category service thông qua K8s service name: `category-api`
 
 .. code-block:: bash
 
   kubectl run curl --image=radial/busyboxplus:curl -i --tty
-  curl etc-api.default.svc.cluster.local/category/1.0.0/customers/genders
+  curl category-api.default.svc.cluster.local/v1/customers/genders
 
