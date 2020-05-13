@@ -14,6 +14,7 @@ API Gateway
 ===========
 
 * :doc:`Kong Ingress <api-gateway/kong-ingress>`
+* :doc:`Mock Service <api-gateway/mock-service>`
 
 Service Discovery
 =================
