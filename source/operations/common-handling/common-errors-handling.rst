@@ -47,6 +47,31 @@ if `{kazoo-kamailio}` restarting as above does not help, su root and restart `{k
 	# On [ipcc1] check rabbitmq-server cluster status 
 	rabbitmqctl -n rabbit@ipcc1 cluster_status
 	
+	# [ipcc1] init exchange & queue
+	
+	/usr/local/bin/rabbitmqadmin declare exchange --vhost=/ name=kapps type=topic durable=false
+	/usr/local/bin/rabbitmqadmin declare exchange --vhost=/ name=callevt type=topic durable=false
+	/usr/local/bin/rabbitmqadmin declare exchange --vhost=/ name=callmgr type=topic durable=false
+	
+	/usr/local/bin/rabbitmqadmin declare exchange --vhost=/ name=acdc_status_stat_for_mycc type=topic durable=true
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="kapps" destination_type="exchange" destination="acdc_status_stat_for_mycc" routing_key="acdc_stats.status.*.*"
+
+	/usr/local/bin/rabbitmqadmin declare exchange --vhost=/ name=acdc_member_call_for_mycc type=topic durable=true
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="callmgr" destination_type="exchange" destination="acdc_member_call_for_mycc" routing_key="acdc.member.call.*.*"
+
+	/usr/local/bin/rabbitmqadmin declare exchange --vhost=/ name=callevt_for_mycc type=topic durable=true
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="callmgr" destination_type="exchange" destination="callevt_for_mycc" routing_key="acdc.member.call.*.*"
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="callevt" destination_type="exchange" destination="callevt_for_mycc" routing_key="call.CHANNEL_ANSWER.*"
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="callevt" destination_type="exchange" destination="callevt_for_mycc" routing_key="call.CHANNEL_BRIDGE.*"
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="callevt" destination_type="exchange" destination="callevt_for_mycc" routing_key="call.CHANNEL_CREATE.*"
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="callevt" destination_type="exchange" destination="callevt_for_mycc" routing_key="call.CHANNEL_DESTROY.*"
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="callevt" destination_type="exchange" destination="callevt_for_mycc" routing_key="call.DTMF.*"
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="callevt" destination_type="exchange" destination="callevt_for_mycc" routing_key="call.CHANNEL_HOLD.*"
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="callevt" destination_type="exchange" destination="callevt_for_mycc" routing_key="call.CHANNEL_TRANSFEREE.*"
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="callevt" destination_type="exchange" destination="callevt_for_mycc" routing_key="call.CHANNEL_TRANSFEROR.*"
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="callevt" destination_type="exchange" destination="callevt_for_mycc" routing_key="call.CHANNEL_UNBRIDGE.*"
+	/usr/local/bin/rabbitmqadmin --vhost="/" declare binding source="callevt" destination_type="exchange" destination="callevt_for_mycc" routing_key="call.CHANNEL_UNHOLD.*"
+	
 Cluster is OK if you can see like this:	
 
 .. code-block:: json
